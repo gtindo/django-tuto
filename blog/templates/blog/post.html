@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Pacifico" rel="stylesheet">
+  <link rel="stylesheet" href="/static/blog/css/styles.css">
+  <title>{{ article.titre }}</title>
+</head>
+<body>
+  <header id="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h1 class="title">Blog</h1>
+        </div>
+        <div class="col-md-8 menu">
+          <a href="/blog/articles/1" class="active">Articles</a>
+          <a href="/blog/about">A propos</a>
+          <!-- a href="#">Contacts</a -->
+        </div>
+      </div>
+    </div>
+  </header>
+  <section>
+    <article class="article">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12" style="text-align:center">
+            <h2>{{ article.titre }}</h2><br />
+            <img src="/{{article.image.url}}" class="img-fluid"/>
+          </div>
+          <div class="col-md-12">
+            <br /><br />
+            <p>
+              {% autoescape off %}
+                {{ article.contenu|linebreaks}}
+              {% endautoescape %}
+            </p><br />
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section style="padding-bottom: 40px;padding-top: 40px;">
+    <div class="container">
+      <h3>Reactions sur l'article</h3>
+      {% for commentaire in commentaires %}
+      <div class="row com">
+        <div class="col-md-1" style="text-align:center">
+          <i class="fa fa-user-circle" style="font-size:60px; color:#58c93a"></i><br />
+          <strong>{{ commentaire.auteur }}</strong>
+        </div>
+        <div class="col-md-8">
+          <p>
+            {{ commentaire.contenu }}
+          </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="form-commentaire">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Ajouter un commentaire</h3><br />
+          <form action="{% url 'post' article.id %}" method="post">
+              {% csrf_token %}
+              {{ comForm.as_p }}
+              <input type="submit" class="btn btn-c" value="Envoyer" />
+              {% if envoi %}
+              <br />
+                <span style="color:red">Commentaire envoye !</span>
+              {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <footer id="footer">
+    <h1>Blog</h1><br />
+    <p>&copy; Gtindoy, tous droits reserves.</p><br />
+    <div>
+      <i class="fa fa-facebook" style="font-size:36px"></i>&nbsp;&nbsp;
+      <i class="fa fa-twitter" style="font-size:36px"></i>&nbsp;&nbsp;
+      <i class="fa fa-instagram" style="font-size:36px"></i>&nbsp;&nbsp;
+      <i class="fa fa-medium" style="font-size:36px"></i>
+    </div>
+  </footer>
+</body>
+</html>
